@@ -7,9 +7,10 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["FinanceManager.WebAPI/FinanceManager.WebAPI.csproj", "FinanceManager.WebAPI/"]
+COPY ["src/FinanceManager.WebAPI/FinanceManager.WebAPI.csproj", "FinanceManager.WebAPI/"]
+COPY ["src/FinanceManager.Infrastructure/FinanceManager.Infrastructure.csproj", "FinanceManager.Infrastructure/"]
 RUN dotnet restore "FinanceManager.WebAPI/FinanceManager.WebAPI.csproj"
-COPY . .
+COPY src /src
 WORKDIR "/src/FinanceManager.WebAPI"
 RUN dotnet build "FinanceManager.WebAPI.csproj" -c Release -o /app/build
 

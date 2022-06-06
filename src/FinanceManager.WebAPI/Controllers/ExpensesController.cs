@@ -18,15 +18,17 @@ namespace FinanceManager.WebAPI.Controllers
         }
 
         [HttpGet(Name = nameof(ListExpenses))]
-        public IEnumerable<Expense> ListExpenses()
+        public IActionResult ListExpenses()
         {
-            return _expensesService.GetAllExpenses();
+            return Ok(_expensesService.GetAllExpenses());
         }
 
         [HttpPost]
-        public IActionResult AddExpense(CreateExpenseRequest createExpenseRequest)
+        public IActionResult AddExpense(
+            [FromBody] CreateExpenseRequest createExpenseRequest, 
+            CancellationToken cancellationToken)
         {
-            _expensesService.AddExpense(createExpenseRequest);
+            _expensesService.AddExpenseAsync(createExpenseRequest, cancellationToken);
             return Accepted();
         }
 
