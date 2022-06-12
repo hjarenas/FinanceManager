@@ -19,6 +19,11 @@ public static class ConfigureServices
         }
         else
         {
+            if(string.IsNullOrEmpty(persistanceOptions.PostgresSqlConnectionString))
+            {
+                throw new InvalidOperationException("Cannot use Postgres if it is not configured");
+            }
+            
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(persistanceOptions.PostgresSqlConnectionString));
         }

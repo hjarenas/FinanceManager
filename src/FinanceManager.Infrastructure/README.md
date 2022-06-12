@@ -9,5 +9,5 @@ Then, add the following flags to your command (values assume you are executing f
 
 The full command would look like this:
 ``` bash
-dotnet-ef migrations add InitialCreate --project src/FinanceManager.Infrastructure --startup-project src/FinanceManager.WebAPI --output-dir src/FinanceManager.Infrastructure/Persistence/Migrations
+dotnet ef migrations add InitialCreate --project src/FinanceManager.Infrastructure --startup-project src/FinanceManager.WebAPI --output-dir src/FinanceManager.Infrastructure/Persistence/Migrations
 ```
