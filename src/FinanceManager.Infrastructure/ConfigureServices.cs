@@ -1,5 +1,5 @@
 using CleanArchitecture.Application.Common.Interfaces;
-using FinanceManager.Infrstructure.Persistance;
+using FinanceManager.Infrstructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

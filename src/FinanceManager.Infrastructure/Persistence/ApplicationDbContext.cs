@@ -3,7 +3,7 @@ using FinanceManager.Domain.ExpensesAggregate;
 using System.Reflection;
 using CleanArchitecture.Application.Common.Interfaces;
 
-namespace FinanceManager.Infrstructure;
+namespace FinanceManager.Infrstructure.Persistence;
 public class ApplicationDbContext : DbContext, IApplicationDbContext
 {
     public ApplicationDbContext(

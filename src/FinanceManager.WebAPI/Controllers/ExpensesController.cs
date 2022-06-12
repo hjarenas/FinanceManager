@@ -24,11 +24,11 @@ namespace FinanceManager.WebAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddExpense(
+        public async Task<IActionResult> AddExpenseAsync(
             [FromBody] CreateExpenseRequest createExpenseRequest, 
             CancellationToken cancellationToken)
         {
-            _expensesService.AddExpenseAsync(createExpenseRequest, cancellationToken);
+            await _expensesService.AddExpenseAsync(createExpenseRequest, cancellationToken);
             return Accepted();
         }
 
