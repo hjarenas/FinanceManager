@@ -33,7 +33,6 @@ namespace FinanceManager.WebAPI.Controllers
         }
 
         [HttpGet("{expenseId}", Name = nameof(GetExpenseById))]
-        // [Route("/{expenseId}")]
         public IActionResult GetExpenseById([FromRoute] Guid expenseId)
         {
             var expense = _expensesService.GetSingleExpense(expenseId);

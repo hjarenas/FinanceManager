@@ -6,10 +6,8 @@ public class ExpensesService : IExpensesService
 {
     private readonly IMapper _mapper;
     private readonly IApplicationDbContext _context;
-    private IList<Expense> _expenses;
     public ExpensesService(IMapper mapper,IApplicationDbContext context)
     {
-        _expenses = new List<Expense>();
         _mapper = mapper;
         _context = context;
     }
@@ -29,6 +27,6 @@ public class ExpensesService : IExpensesService
 
     public Expense? GetSingleExpense(Guid expenseId)
     {
-        return _expenses.FirstOrDefault(e => e.ExpenseId == expenseId);
+        return _context.Expenses.FirstOrDefault(e => e.ExpenseId == expenseId);
     }
 }
