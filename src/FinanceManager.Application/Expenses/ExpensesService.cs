@@ -14,11 +14,12 @@ public class ExpensesService : IExpensesService
         _context = context;
     }
 
-    public async Task AddExpenseAsync(CreateExpenseRequest createExpenseRequest, CancellationToken cancellationToken)
+    public async Task<Expense> AddExpenseAsync(CreateExpenseRequest createExpenseRequest, CancellationToken cancellationToken)
     {
         var expense = _mapper.Map<Expense>(createExpenseRequest);
         _context.Expenses.Add(expense);
         await _context.SaveChangesAsync(cancellationToken);
+        return expense;
     }
 
     public IEnumerable<Expense> GetAllExpenses()

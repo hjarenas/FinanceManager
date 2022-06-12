@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FinanceManager.WebAPI.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class ExpensesController : ControllerBase
     {
         private readonly ILogger<ExpensesController> _logger;
@@ -25,19 +25,19 @@ namespace FinanceManager.WebAPI.Controllers
 
         [HttpPost]
         public async Task<IActionResult> AddExpenseAsync(
-            [FromBody] CreateExpenseRequest createExpenseRequest, 
+            [FromBody] CreateExpenseRequest createExpenseRequest,
             CancellationToken cancellationToken)
         {
-            await _expensesService.AddExpenseAsync(createExpenseRequest, cancellationToken);
-            return Accepted();
+            var expense = await _expensesService.AddExpenseAsync(createExpenseRequest, cancellationToken);
+            return CreatedAtRoute(nameof(GetExpenseById), new { expenseId = expense.ExpenseId }, expense);
         }
 
-        [HttpGet]
-        [Route("/{expenseId}")]
-        public IActionResult GetExpense([FromRoute] Guid expenseId)
+        [HttpGet("{expenseId}", Name = nameof(GetExpenseById))]
+        // [Route("/{expenseId}")]
+        public IActionResult GetExpenseById([FromRoute] Guid expenseId)
         {
             var expense = _expensesService.GetSingleExpense(expenseId);
-            return expense is not null 
+            return expense is not null
                 ? Ok(expense)
                 : NotFound();
 
