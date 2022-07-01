@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 namespace FinanceManager.WebAPI;
 public static class RegisterWebAPI
 {
-    public static void AddWebApi(this IServiceCollection services)
+    public static void AddWebApiServices(this IServiceCollection services)
     {
         services
             .AddControllers(options => options.UseDateOnlyTimeOnlyStringConverters())

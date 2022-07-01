@@ -1,45 +1,46 @@
-﻿namespace FinanceManager.Domain.ExpensesAggregate;
+﻿using SharedKernel.Exceptions;
+
+namespace FinanceManager.Domain.ExpensesAggregate;
 public class Expense
 {
-    public Expense(
-        DateOnly bookingDate, 
-        string recipient, 
-        string description, 
-        string intendedUse, 
-        Direction direction, 
-        decimal amountInEur, 
-        Category category, 
-        BankAccount bankAccount)
-        =>
-        (BookingDate, Recipient, Description, IntendedUse, Direction, AmountInEur, Category, BankAccount)
-        = (bookingDate, recipient, description, intendedUse, direction, amountInEur, category, bankAccount);
-    
-    /// <summary>
-    /// EF Constructor
-    /// </summary>
-    #pragma warning disable CS8618
-    private Expense(
-        DateOnly bookingDate, 
-        string recipient, 
-        string description, 
-        string intendedUse, 
-        Direction direction, 
-        decimal amountInEur)
-        =>
-        (BookingDate, Recipient, Description, IntendedUse, Direction, AmountInEur)
-        = (bookingDate, recipient, description, intendedUse, direction, amountInEur);
-    #pragma warning restore CS8618
-    public Guid? ExpenseId {get; init;}
+    private string? _recipient;
+    private string? _description;
+    private string? _intendedUse;
+    private Category? _category;
+    private BankAccount? _bankAccount;
+    public Guid? ExpenseId { get; init; }
     public DateOnly BookingDate { get; set; }
-    public string Recipient { get; set; }
-    public string Description { get; set; }
+    public string Recipient
+    {
+        get => _recipient ?? throw new UninitializedPropertyException();
+        set => _recipient = value;
+    }
+    public string Description
+    {
+        get => _description ?? throw new UninitializedPropertyException();
+        set => _description = value;
+    }
     /// <summary>
     /// Verwendungszweck
     /// </summary>
-    public string IntendedUse { get; set; }
+    public string IntendedUse
+    {
+        get => _intendedUse ?? throw new UninitializedPropertyException();
+        set => _intendedUse = value;
+    }
     public Direction Direction { get; set; }
     public decimal AmountInEur { get; set; }
-    public Category Category { get; set; }
+    public bool Reimbursable { get; set; }
+    public bool IsRecurring { get; set; }
+    public Category Category
+    {
+        get => _category ?? throw new UninitializedPropertyException();
+        set => _category = value;
+    }
 
-    public BankAccount BankAccount {get; set; }
+    public BankAccount BankAccount
+    {
+        get => _bankAccount ?? throw new UninitializedPropertyException();
+        set => _bankAccount = value;
+    }
 }

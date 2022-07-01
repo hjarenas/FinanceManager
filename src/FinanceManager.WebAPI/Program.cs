@@ -5,9 +5,9 @@ using FinanceManager.WebAPI;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddInfrastructure(builder.Configuration);
-builder.Services.AddWebApi();
-builder.Services.AddApplication();
+builder.Services.AddApplicationServices();
+builder.Services.AddInfrastructureServices(builder.Configuration);
+builder.Services.AddWebApiServices();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

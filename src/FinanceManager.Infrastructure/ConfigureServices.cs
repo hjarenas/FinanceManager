@@ -1,4 +1,8 @@
 using CleanArchitecture.Application.Common.Interfaces;
+using FinanceManager.Infrastructure.ExternalServices.BankDataImporters;
+using FinanceManager.Infrastructure.ExternalServices.BankDataImporters.BankSpecificImporters.Ing;
+using FinanceManager.Infrastructure.Files;
+using FinanceManager.Infrastructure.Files.Csv;
 using FinanceManager.Infrstructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -7,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace FinanceManager.Infrstructure;
 public static class ConfigureServices
 {
-        public static IServiceCollection AddInfrastructure(
+        public static IServiceCollection AddInfrastructureServices(
             this IServiceCollection services, 
             IConfiguration configuration)
     {
@@ -27,13 +31,12 @@ public static class ConfigureServices
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(persistanceOptions.PostgresSqlConnectionString));
         }
-        // else
-        // {
-        //     services.AddDbContext<ApplicationDbContext>(options =>
-        //         options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
-        //             builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
-        // }
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
+        services.AddScoped<IFileSearchService, FileSearchService>();
+        services.AddScoped<ITransactionsImporterService, TransactionsImporterService>();
+        services.AddScoped<IBankTransactionsImporter, IngTransactionsImporter>();
+        services.AddScoped<ICsvReader, CsvReader>();
+        services.AddScoped<ICsvReaderFactory, CsvReaderFactory>();
         return services;
     }
 }

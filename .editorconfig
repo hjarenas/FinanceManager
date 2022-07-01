@@ -1,4 +1,5 @@
-# editorconfig.org
+# http://editorconfig.org
+# https://github.com/dotnet/runtime/blob/main/.editorconfig
 
 # top-most EditorConfig file
 root = true
@@ -18,10 +19,15 @@ generated_code = true
 
 # C# files
 [*.cs]
-# Treat code style issues as errors
+# Treat code styles issues as errors
 dotnet_analyzer_diagnostic.category-Style.severity = error
 # do not use discard variables when calling methods that alter the state
 dotnet_diagnostic.IDE0058.severity = none
+# do not force high performance logging
+dotnet_diagnostic.CA1848.severity = suggestion
+# Allow the event handler suffixes for the created event handler classes
+dotnet_code_quality.ca1711.allowed_suffixes = EventHandler
+
 
 # New line preferences
 csharp_new_line_before_open_brace = all
@@ -49,7 +55,7 @@ dotnet_style_qualification_for_property = false
 dotnet_style_qualification_for_method = false
 dotnet_style_qualification_for_event = false
 
-# Types: use var everywhere
+# Types: use keywords instead of BCL types, and permit var only when the type is clear
 csharp_style_var_for_built_in_types = true
 csharp_style_var_when_type_is_apparent = true
 csharp_style_var_elsewhere = true
@@ -63,16 +69,6 @@ dotnet_naming_rule.constant_fields_should_be_pascal_case.style    = pascal_case_
 dotnet_naming_symbols.constant_fields.applicable_kinds   = field
 dotnet_naming_symbols.constant_fields.required_modifiers = const
 dotnet_naming_style.pascal_case_style.capitalization = pascal_case
-
-# static fields should have s_ prefix
-dotnet_naming_rule.static_fields_should_have_prefix.severity = suggestion
-dotnet_naming_rule.static_fields_should_have_prefix.symbols  = static_fields
-dotnet_naming_rule.static_fields_should_have_prefix.style    = static_prefix_style
-dotnet_naming_symbols.static_fields.applicable_kinds   = field
-dotnet_naming_symbols.static_fields.required_modifiers = static
-dotnet_naming_symbols.static_fields.applicable_accessibilities = private, internal, private_protected
-dotnet_naming_style.static_prefix_style.required_prefix = s_
-dotnet_naming_style.static_prefix_style.capitalization = camel_case
 
 # internal and private fields should be _camelCase
 dotnet_naming_rule.camel_case_for_private_internal_fields.severity = suggestion
@@ -131,7 +127,7 @@ csharp_style_conditional_delegate_call = true
 csharp_style_prefer_index_operator = false
 csharp_style_prefer_range_operator = false
 csharp_style_pattern_local_over_anonymous_function = false
-csharp_style_namespace_declarations = file_scope
+csharp_style_namespace_declarations = file_scoped
 dotnet_style_namespace_match_folder = true
 
 # Space preferences
@@ -186,4 +182,3 @@ indent_size = 2
 end_of_line = lf
 [*.{cmd,bat}]
 end_of_line = crlf
-
