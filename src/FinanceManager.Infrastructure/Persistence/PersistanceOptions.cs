@@ -1,4 +1,4 @@
-namespace FinanceManager.Infrstructure.Persistence;
+namespace FinanceManager.Infrastructure.Persistence;
 public record PersistanceOptions
 {
     public const string Persistance = nameof(Persistance);

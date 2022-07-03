@@ -1,5 +1,5 @@
 using FinanceManager.Application;
-using FinanceManager.Infrstructure;
+using FinanceManager.Infrastructure;
 using FinanceManager.WebAPI;
 
 var builder = WebApplication.CreateBuilder(args);

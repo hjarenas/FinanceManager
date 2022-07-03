@@ -32,7 +32,7 @@ public class IngTransactionsImporter : IBankTransactionsImporter
         var filesToImport = GetMatchingFiles();
         foreach (var fileName in filesToImport)
         {
-
+            GetRawData(fileName);
         }
         return await Task.FromResult(new ImportExpensesCommand());
     }
@@ -41,38 +41,44 @@ public class IngTransactionsImporter : IBankTransactionsImporter
     {
         var reader = _csvReaderFactory.CreateCsvReader(fileName, new[] { CsvDelimiter });
         //skip first line
-        reader.ReadFields();
-        var bankMetadata = GetMetadata(reader);
-        var transactionDetails = GetTransactionsInformation(reader);
+        reader.ReadColumns();
+
+        _ = GetMetadata(reader);
+
+        _ = GetTransactionsInformation(reader);
     }
-    private BankMetadata GetMetadata(ICsvReader reader)
+    private static BankMetadata GetMetadata(ICsvReader reader)
     {
-        var lineFields = reader.ReadFirstRowWithNColumns(2);
+        _ = reader.ReadFirstRowWithNColumns(2);
+
         do
         {
 
-        } while((lineFields = reader.ReadFields()).Length == 2);
+        } while ((_ = reader.ReadColumns()).Length == 2);
         return new BankMetadata();
     }
 
-    private IEnumerable<IngTransactionDetails> GetTransactionsInformation(ICsvReader reader)
+    private static IEnumerable<IngTransactionDetails> GetTransactionsInformation(ICsvReader reader)
     {
         var transactionDetails = new List<IngTransactionDetails>();
         var headers = reader.ReadFirstRowWithNColumns(10);
-        while(!reader.EndOfData)
+        if (!headers.Any())
         {
-            var transactionDetailsLine = reader.ReadFields();
+            throw new InvalidOperationException("The file has no lines with the expected number of columns");
+        }
+        while (!reader.EndOfData)
+        {
+            var transactionDetailsLine = reader.ReadColumns();
+            transactionDetails.Add(new IngTransactionDetails
+            {
+                Notes = transactionDetailsLine?.FirstOrDefault() ?? ""
+            });
         }
         return transactionDetails;
     }
 
-    private IEnumerable<string> GetMatchingFiles()
-    {
-        if (string.IsNullOrEmpty(_csvImporterOptions.FilesLocation))
-        {
-            throw new InvalidOperationException("Files cannot be imported if the location is not configured");
-        }
-
-        return _fileSearchService.GetMatchingFilesInDirectory(_csvImporterOptions.FilesLocation, FileNamePattern);
-    }
+    private IEnumerable<string> GetMatchingFiles() =>
+        string.IsNullOrEmpty(_csvImporterOptions.FilesLocation)
+            ? throw new InvalidOperationException("Files cannot be imported if the location is not configured")
+            : _fileSearchService.GetMatchingFilesInDirectory(_csvImporterOptions.FilesLocation, FileNamePattern);
 }

@@ -3,29 +3,28 @@ using AutoMapper;
 namespace FinanceManager.Application.Common.Mappings;
 public class MappingProfile : Profile
 {
-    public MappingProfile()
-    {
+    public MappingProfile() =>
         ApplyMappingsFromAssembly(Assembly.GetExecutingAssembly());
-    }
     private void ApplyMappingsFromAssembly(Assembly assembly)
     {
-        var mappingInterfacesInfo = new [] 
+        var mappingInterfacesInfo = new[]
             {
                 (InterfaceType: typeof(IMapFrom<>), MappingMethodName: nameof(IMapFrom<object>.MappingFrom)),
-                (InterfaceType: typeof(IMapTo<>), MappingMethodName: nameof(IMapTo<object>.MappingTo)) 
+                (InterfaceType: typeof(IMapTo<>), MappingMethodName: nameof(IMapTo<object>.MappingTo))
             };
-        foreach(var mappingInterfaceInfo in mappingInterfacesInfo)
+        foreach (var mappingInterfaceInfo in mappingInterfacesInfo)
         {
             ApplyMappingsForType(assembly, mappingInterfaceInfo);
         }
     }
-    bool HasInterface(Type t, Type mapFromType) => 
+
+    private static bool HasInterface(Type t, Type mapFromType) =>
         t.IsGenericType && t.GetGenericTypeDefinition() == mapFromType;
     private void ApplyMappingsForType(
-        Assembly assembly, 
+        Assembly assembly,
         (Type InterfaceType, string MappingMethodName) mappingInterfaceInfo)
     {
-        
+
         var types = assembly.GetExportedTypes()
             .Where(t => t.GetInterfaces().Any(i => HasInterface(i, mappingInterfaceInfo.InterfaceType)))
             .ToList();
@@ -37,8 +36,8 @@ public class MappingProfile : Profile
     }
 
     private void InvokeProfiles(
-        (Type InterfaceType, string MappingMethodName) mappingInterfaceInfo, 
-        Type[] argumentTypes, 
+        (Type InterfaceType, string MappingMethodName) mappingInterfaceInfo,
+        Type[] argumentTypes,
         Type type)
     {
         var instance = Activator.CreateInstance(type);
@@ -57,7 +56,7 @@ public class MappingProfile : Profile
                 foreach (var @interface in interfaces)
                 {
                     var interfaceMethodInfo = @interface.GetMethod(
-                        mappingInterfaceInfo.MappingMethodName, 
+                        mappingInterfaceInfo.MappingMethodName,
                         argumentTypes);
                     interfaceMethodInfo?.Invoke(instance, new object[] { this });
                 }

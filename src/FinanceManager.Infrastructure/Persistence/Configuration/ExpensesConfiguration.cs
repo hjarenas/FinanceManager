@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using FinanceManager.Domain.ExpensesAggregate;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace FinanceManager.Infrstructure.Persistence.Configuration;
+namespace FinanceManager.Infrastructure.Persistence.Configuration;
 public class ExpensesConfiguration : IEntityTypeConfiguration<Expense>
 {
     public void Configure(EntityTypeBuilder<Expense> builder)

@@ -1,7 +1,7 @@
 using FinanceManager.Domain.ExpensesAggregate;
 using Microsoft.EntityFrameworkCore;
 
-namespace CleanArchitecture.Application.Common.Interfaces;
+namespace FinanceManager.Application.Common.Interfaces;
 
 public interface IApplicationDbContext
 {

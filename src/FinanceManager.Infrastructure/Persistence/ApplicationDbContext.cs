@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using FinanceManager.Domain.ExpensesAggregate;
 using System.Reflection;
-using CleanArchitecture.Application.Common.Interfaces;
+using FinanceManager.Application.Common.Interfaces;
 
-namespace FinanceManager.Infrstructure.Persistence;
+namespace FinanceManager.Infrastructure.Persistence;
 public class ApplicationDbContext : DbContext, IApplicationDbContext
 {
     public ApplicationDbContext(
@@ -13,11 +13,11 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     }
     public DbSet<Expense> Expenses => Set<Expense>();
 
-    protected override void OnModelCreating(ModelBuilder builder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-        base.OnModelCreating(builder);
+        base.OnModelCreating(modelBuilder);
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
