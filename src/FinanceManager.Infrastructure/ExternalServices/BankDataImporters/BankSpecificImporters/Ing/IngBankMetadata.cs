@@ -1,5 +1,5 @@
 namespace FinanceManager.Infrastructure.ExternalServices.BankDataImporters.BankSpecificImporters.Ing;
-public record BankMetadata
+public record IngBankMetadata
 {
     public string? IBAN { get; set; }
     public string? AccountName { get; set; }
@@ -7,4 +7,13 @@ public record BankMetadata
     public string? Customers { get; set; }
     public string? TimeRange { get; set; }
     public string? Balance { get; set; }
+}
+public enum IngMetadataKeys
+{
+    IBAN,
+    Kontoname,
+    Bank,
+    Kunde,
+    Zeitraum,
+    Saldo
 }

@@ -32,10 +32,12 @@ public static class ConfigureServices
                 options.UseNpgsql(persistanceOptions.PostgresSqlConnectionString));
         }
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
+        services.Configure<CsvImporterOptions>(configuration.GetSection(CsvImporterOptions.CsvImporterSectionName));
         services.AddScoped<IFileSearchService, FileSearchService>();
         services.AddScoped<ITransactionsImporterService, TransactionsImporterService>();
         services.AddScoped<IBankTransactionsImporter, IngTransactionsImporter>();
-        services.AddScoped<ICsvReader, CsvReader>();
+        services.AddScoped<IIngMetadataParser, IngMetadataParser>();
+        services.AddScoped<IIngTransactionDetailsParser, IngTransactionDetailsParser>();
         services.AddScoped<ICsvReaderFactory, CsvReaderFactory>();
         return services;
     }

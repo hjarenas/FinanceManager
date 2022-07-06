@@ -2,6 +2,7 @@ using FinanceManager.Application.Expenses.Commands.ImportExpenses;
 using FinanceManager.Infrastructure.Files;
 using FinanceManager.Infrastructure.Files.Csv;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace FinanceManager.Infrastructure.ExternalServices.BankDataImporters.BankSpecificImporters.Ing;
@@ -12,18 +13,27 @@ public class IngTransactionsImporter : IBankTransactionsImporter
     private readonly CsvImporterOptions _csvImporterOptions;
     private readonly IFileSearchService _fileSearchService;
     private readonly ICsvReaderFactory _csvReaderFactory;
+    private readonly IIngMetadataParser _ingMetadataParser;
+    private readonly IIngTransactionDetailsParser _ingTransactionDetailsParser;
     private readonly ISender _mediator;
+    private readonly ILogger<IngTransactionsImporter> _logger;
 
     public IngTransactionsImporter(
         IOptions<CsvImporterOptions> csvImporterOptions,
         IFileSearchService fileSearchService,
         ICsvReaderFactory csvReaderFactory,
-        ISender mediator)
+        IIngMetadataParser ingMetadataParser,
+        IIngTransactionDetailsParser ingTransactionDetailsParser,
+        ISender mediator,
+        ILogger<IngTransactionsImporter> logger)
     {
         _csvImporterOptions = csvImporterOptions.Value;
         _fileSearchService = fileSearchService;
         _csvReaderFactory = csvReaderFactory;
+        _ingMetadataParser = ingMetadataParser;
+        _ingTransactionDetailsParser = ingTransactionDetailsParser;
         _mediator = mediator;
+        _logger = logger;
     }
 
 
@@ -43,38 +53,9 @@ public class IngTransactionsImporter : IBankTransactionsImporter
         //skip first line
         reader.ReadColumns();
 
-        _ = GetMetadata(reader);
-
-        _ = GetTransactionsInformation(reader);
-    }
-    private static BankMetadata GetMetadata(ICsvReader reader)
-    {
-        _ = reader.ReadFirstRowWithNColumns(2);
-
-        do
-        {
-
-        } while ((_ = reader.ReadColumns()).Length == 2);
-        return new BankMetadata();
-    }
-
-    private static IEnumerable<IngTransactionDetails> GetTransactionsInformation(ICsvReader reader)
-    {
-        var transactionDetails = new List<IngTransactionDetails>();
-        var headers = reader.ReadFirstRowWithNColumns(10);
-        if (!headers.Any())
-        {
-            throw new InvalidOperationException("The file has no lines with the expected number of columns");
-        }
-        while (!reader.EndOfData)
-        {
-            var transactionDetailsLine = reader.ReadColumns();
-            transactionDetails.Add(new IngTransactionDetails
-            {
-                Notes = transactionDetailsLine?.FirstOrDefault() ?? ""
-            });
-        }
-        return transactionDetails;
+        _ingMetadataParser.ParseMetadata(reader);
+        var transactionDetails = _ingTransactionDetailsParser.ParseTransactionDetails(reader);
+        _logger.LogInformation("Transaction details {TransactionDetails}", transactionDetails);
     }
 
     private IEnumerable<string> GetMatchingFiles() =>
