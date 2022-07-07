@@ -26,5 +26,5 @@ public class TransactionsService : ITransactionsService
     public IEnumerable<Transaction> GetAllExpenses() => _context.Expenses.ToList();
 
     public Transaction? GetSingleExpense(Guid expenseId) =>
-        _context.Expenses.FirstOrDefault(e => e.ExpenseId == expenseId);
+        _context.Expenses.FirstOrDefault(e => e.TransactionId == expenseId);
 }

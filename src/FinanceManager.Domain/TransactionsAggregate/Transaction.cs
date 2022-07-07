@@ -9,7 +9,7 @@ public class Transaction
     private string? _intendedUse;
     private Category? _category;
     private BankAccount? _bankAccount;
-    public Guid? ExpenseId { get; init; }
+    public Guid? TransactionId { get; init; }
     public DateOnly BookingDate { get; set; }
     public string Recipient
     {

@@ -5,34 +5,34 @@ namespace FinanceManager.WebAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ExpensesController : ControllerBase
+public class TransactionsController : ControllerBase
 {
-    private readonly ILogger<ExpensesController> _logger;
-    private readonly ITransactionsService _expensesService;
+    private readonly ILogger<TransactionsController> _logger;
+    private readonly ITransactionsService _transactionsService;
 
-    public ExpensesController(ILogger<ExpensesController> logger, ITransactionsService expensesService)
+    public TransactionsController(ILogger<TransactionsController> logger, ITransactionsService transactionsService)
     {
         _logger = logger;
-        _expensesService = expensesService;
+        _transactionsService = transactionsService;
     }
 
     [HttpGet(Name = nameof(ListExpenses))]
     public IActionResult ListExpenses() =>
-        Ok(_expensesService.GetAllExpenses());
+        Ok(_transactionsService.GetAllExpenses());
 
     [HttpPost]
     public async Task<IActionResult> AddExpenseAsync(
         [FromBody] CreateTransactionRequest createExpenseRequest,
         CancellationToken cancellationToken)
     {
-        var expense = await _expensesService.AddExpenseAsync(createExpenseRequest, cancellationToken);
-        return CreatedAtRoute(nameof(GetExpenseById), new { expenseId = expense.ExpenseId }, expense);
+        var expense = await _transactionsService.AddExpenseAsync(createExpenseRequest, cancellationToken);
+        return CreatedAtRoute(nameof(GetExpenseById), new { expenseId = expense.TransactionId }, expense);
     }
 
     [HttpGet("{expenseId}", Name = nameof(GetExpenseById))]
     public IActionResult GetExpenseById([FromRoute] Guid expenseId)
     {
-        var expense = _expensesService.GetSingleExpense(expenseId);
+        var expense = _transactionsService.GetSingleExpense(expenseId);
         return expense is not null
             ? Ok(expense)
             : NotFound();
