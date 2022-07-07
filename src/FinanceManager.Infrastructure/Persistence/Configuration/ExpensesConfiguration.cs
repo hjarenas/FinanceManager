@@ -12,6 +12,6 @@ public class ExpensesConfiguration : IEntityTypeConfiguration<Transaction>
         builder.Property(e => e.Direction)
             .HasConversion(converter);
         builder.OwnsOne(e => e.BankAccount);
-        builder.OwnsOne(e => e.Category);
+        builder.OwnsOne(e => e.Categories);
     }
 }

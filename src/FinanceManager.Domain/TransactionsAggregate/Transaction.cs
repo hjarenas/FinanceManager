@@ -4,17 +4,17 @@ using SharedKernel.Exceptions;
 namespace FinanceManager.Domain.TransactionsAggregate;
 public class Transaction
 {
-    private string? _recipient;
+    private string? _thirdParty;
     private string? _description;
     private string? _intendedUse;
-    private Category? _category;
+    private IEnumerable<Category>? _categories;
     private BankAccount? _bankAccount;
     public Guid? TransactionId { get; init; }
     public DateOnly BookingDate { get; set; }
-    public string Recipient
+    public string ThirdParty
     {
-        get => _recipient ?? throw new UninitializedPropertyException();
-        set => _recipient = value;
+        get => _thirdParty ?? throw new UninitializedPropertyException();
+        set => _thirdParty = value;
     }
     public string Description
     {
@@ -33,10 +33,10 @@ public class Transaction
     public decimal AmountInEur { get; set; }
     public bool Reimbursable { get; set; }
     public bool IsRecurring { get; set; }
-    public Category Category
+    public IEnumerable<Category> Categories
     {
-        get => _category ?? throw new UninitializedPropertyException();
-        set => _category = value;
+        get => _categories ?? throw new UninitializedPropertyException();
+        set => _categories = value;
     }
 
     public BankAccount BankAccount
