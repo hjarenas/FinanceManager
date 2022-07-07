@@ -1,12 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using FinanceManager.Domain.ExpensesAggregate;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using FinanceManager.Domain.TransactionsAggregate;
 
 namespace FinanceManager.Infrastructure.Persistence.Configuration;
-public class ExpensesConfiguration : IEntityTypeConfiguration<Expense>
+public class ExpensesConfiguration : IEntityTypeConfiguration<Transaction>
 {
-    public void Configure(EntityTypeBuilder<Expense> builder)
+    public void Configure(EntityTypeBuilder<Transaction> builder)
     {
         var converter = new EnumToStringConverter<Direction>();
         builder.Property(e => e.Direction)

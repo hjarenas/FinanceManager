@@ -1,7 +1,7 @@
-using FinanceManager.Application.Expenses.Commands.ImportExpenses;
+using FinanceManager.Application.Transactions.Commands.ImportTransactions;
 
 namespace FinanceManager.Infrastructure.ExternalServices.BankDataImporters;
 public interface ITransactionsImporterService
 {
-    Task<IEnumerable<ImportExpensesCommand>> ImportDataFromAllBanksAsync();
+    Task<IEnumerable<ImportTransactionsCommand>> ImportDataFromAllBanksAsync();
 }

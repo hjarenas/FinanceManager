@@ -1,4 +1,4 @@
-using FinanceManager.Application.Expenses.Commands.ImportExpenses;
+using FinanceManager.Application.Transactions.Commands.ImportTransactions;
 using FinanceManager.Infrastructure.Files;
 using FinanceManager.Infrastructure.Files.Csv;
 using MediatR;
@@ -37,14 +37,14 @@ public class IngTransactionsImporter : IBankTransactionsImporter
     }
 
 
-    public async Task<ImportExpensesCommand> ImportData()
+    public async Task<ImportTransactionsCommand> ImportData()
     {
         var filesToImport = GetMatchingFiles();
         foreach (var fileName in filesToImport)
         {
             GetRawData(fileName);
         }
-        return await Task.FromResult(new ImportExpensesCommand());
+        return await Task.FromResult(new ImportTransactionsCommand());
     }
 
     private void GetRawData(string fileName)

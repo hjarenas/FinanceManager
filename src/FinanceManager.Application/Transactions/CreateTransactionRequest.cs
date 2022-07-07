@@ -1,7 +1,9 @@
 using FinanceManager.Application.Common.Mappings;
-using FinanceManager.Domain.ExpensesAggregate;
-namespace FinanceManager.Application.Expenses;
-public record CreateExpenseRequest : IMapTo<Expense>
+using FinanceManager.Domain.AccountsAggregate;
+using FinanceManager.Domain.TransactionsAggregate;
+
+namespace FinanceManager.Application.Transactions;
+public record CreateTransactionRequest : IMapTo<Transaction>
 {
     private Category? _category;
     private BankAccount? _bankAccount;

@@ -1,7 +1,8 @@
-﻿using SharedKernel.Exceptions;
+﻿using FinanceManager.Domain.AccountsAggregate;
+using SharedKernel.Exceptions;
 
-namespace FinanceManager.Domain.ExpensesAggregate;
-public class Expense
+namespace FinanceManager.Domain.TransactionsAggregate;
+public class Transaction
 {
     private string? _recipient;
     private string? _description;

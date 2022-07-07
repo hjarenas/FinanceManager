@@ -1,7 +1,7 @@
 using SharedKernel.Exceptions;
 
-namespace FinanceManager.Application.Expenses.Commands.ImportExpenses;
-public record ImportExpensesCommand
+namespace FinanceManager.Application.Transactions.Commands.ImportTransactions;
+public record ImportTransactionsCommand
 {
     private string? _recipient;
     private string? _sender;

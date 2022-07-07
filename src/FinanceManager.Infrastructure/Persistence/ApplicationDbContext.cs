@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using FinanceManager.Domain.ExpensesAggregate;
 using System.Reflection;
 using FinanceManager.Application.Common.Interfaces;
+using FinanceManager.Domain.TransactionsAggregate;
 
 namespace FinanceManager.Infrastructure.Persistence;
 public class ApplicationDbContext : DbContext, IApplicationDbContext
@@ -11,7 +11,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
      : base(options)
     {
     }
-    public DbSet<Expense> Expenses => Set<Expense>();
+    public DbSet<Transaction> Expenses => Set<Transaction>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

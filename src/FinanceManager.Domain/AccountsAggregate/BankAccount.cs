@@ -1,4 +1,4 @@
-namespace FinanceManager.Domain.ExpensesAggregate;
+namespace FinanceManager.Domain.AccountsAggregate;
 public class BankAccount
 {
     public BankAccount(string bankName, string isin)

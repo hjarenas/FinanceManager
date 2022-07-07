@@ -1,4 +1,4 @@
-using FinanceManager.Application.Expenses;
+using FinanceManager.Application.Transactions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinanceManager.WebAPI.Controllers;
@@ -8,9 +8,9 @@ namespace FinanceManager.WebAPI.Controllers;
 public class ExpensesController : ControllerBase
 {
     private readonly ILogger<ExpensesController> _logger;
-    private readonly IExpensesService _expensesService;
+    private readonly ITransactionsService _expensesService;
 
-    public ExpensesController(ILogger<ExpensesController> logger, IExpensesService expensesService)
+    public ExpensesController(ILogger<ExpensesController> logger, ITransactionsService expensesService)
     {
         _logger = logger;
         _expensesService = expensesService;
@@ -22,7 +22,7 @@ public class ExpensesController : ControllerBase
 
     [HttpPost]
     public async Task<IActionResult> AddExpenseAsync(
-        [FromBody] CreateExpenseRequest createExpenseRequest,
+        [FromBody] CreateTransactionRequest createExpenseRequest,
         CancellationToken cancellationToken)
     {
         var expense = await _expensesService.AddExpenseAsync(createExpenseRequest, cancellationToken);
