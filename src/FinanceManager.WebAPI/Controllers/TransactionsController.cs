@@ -26,7 +26,7 @@ public class TransactionsController : ControllerBase
         CancellationToken cancellationToken)
     {
         var expense = await _transactionsService.AddExpenseAsync(createExpenseRequest, cancellationToken);
-        return CreatedAtRoute(nameof(GetExpenseById), new { expenseId = expense.TransactionId }, expense);
+        return CreatedAtRoute(nameof(GetExpenseById), new { expenseId = expense.Id }, expense);
     }
 
     [HttpGet("{expenseId}", Name = nameof(GetExpenseById))]

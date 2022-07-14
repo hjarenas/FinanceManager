@@ -1,4 +1,3 @@
-using FinanceManager.Application.Transactions.Commands.ImportTransactions;
 using FinanceManager.Infrastructure.Files;
 using FinanceManager.Infrastructure.Files.Csv;
 using MediatR;
@@ -37,25 +36,35 @@ public class IngTransactionsImporter : IBankTransactionsImporter
     }
 
 
-    public async Task<ImportTransactionsCommand> ImportData()
+    public async Task ImportDataAsync()
     {
         var filesToImport = GetMatchingFiles();
         foreach (var fileName in filesToImport)
         {
-            GetRawData(fileName);
+            var (Metadata, Transactions) = GetRawData(fileName);
+            await ImportTransactionDetailsAsync(Metadata, Transactions);
         }
-        return await Task.FromResult(new ImportTransactionsCommand());
     }
 
-    private void GetRawData(string fileName)
+    private async Task ImportTransactionDetailsAsync(IngBankMetadata metadata, IEnumerable<IngTransactionDetails> transactions)
+    {
+        var commands = transactions.Select(t => t.ToImportTransactionCommand(metadata));
+        foreach (var command in commands)
+        {
+            await _mediator.Send(command);
+        }
+    }
+
+    private (IngBankMetadata Metadata, IEnumerable<IngTransactionDetails> Transactions) GetRawData(string fileName)
     {
         var reader = _csvReaderFactory.CreateCsvReader(fileName, new[] { CsvDelimiter });
-        //skip first line
-        reader.ReadColumns();
-
-        _ingMetadataParser.ParseMetadata(reader);
+        var metadata = _ingMetadataParser.ParseMetadata(reader);
         var transactionDetails = _ingTransactionDetailsParser.ParseTransactionDetails(reader);
-        _logger.LogInformation("Transaction details {TransactionDetails}", transactionDetails);
+        _logger.LogInformation(
+            "Transaction details {TransactionDetails}. Metadata {Metadata}",
+            transactionDetails,
+            metadata);
+        return new(metadata, transactionDetails);
     }
 
     private IEnumerable<string> GetMatchingFiles() =>

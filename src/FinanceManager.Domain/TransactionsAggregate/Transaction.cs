@@ -1,15 +1,15 @@
 ﻿using FinanceManager.Domain.AccountsAggregate;
+using FinanceManager.Domain.Common;
 using SharedKernel.Exceptions;
 
 namespace FinanceManager.Domain.TransactionsAggregate;
-public class Transaction
+public class Transaction : BaseEntity
 {
     private string? _thirdParty;
     private string? _description;
     private string? _intendedUse;
     private IEnumerable<Category>? _categories;
     private BankAccount? _bankAccount;
-    public Guid? TransactionId { get; init; }
     public DateOnly BookingDate { get; set; }
     public string ThirdParty
     {
@@ -44,4 +44,6 @@ public class Transaction
         get => _bankAccount ?? throw new UninitializedPropertyException();
         set => _bankAccount = value;
     }
+
+    public Guid BankAccountId { get; set; }
 }

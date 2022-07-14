@@ -18,13 +18,13 @@ public class TransactionsService : ITransactionsService
         CancellationToken cancellationToken)
     {
         var expense = _mapper.Map<Transaction>(createExpenseRequest);
-        _context.Expenses.Add(expense);
+        _context.Transactions.Add(expense);
         await _context.SaveChangesAsync(cancellationToken);
         return expense;
     }
 
-    public IEnumerable<Transaction> GetAllExpenses() => _context.Expenses.ToList();
+    public IEnumerable<Transaction> GetAllExpenses() => _context.Transactions.ToList();
 
     public Transaction? GetSingleExpense(Guid expenseId) =>
-        _context.Expenses.FirstOrDefault(e => e.TransactionId == expenseId);
+        _context.Transactions.FirstOrDefault(e => e.Id == expenseId);
 }
