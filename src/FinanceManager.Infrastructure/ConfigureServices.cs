@@ -1,3 +1,4 @@
+using System.Text;
 using FinanceManager.Application.Common.Interfaces;
 using FinanceManager.Infrastructure.ExternalServices.BankDataImporters;
 using FinanceManager.Infrastructure.ExternalServices.BankDataImporters.BankSpecificImporters.Ing;
@@ -31,6 +32,8 @@ public static class ConfigureServices
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(persistanceOptions.PostgresSqlConnectionString));
         }
+
+        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
         services.Configure<CsvImporterOptions>(configuration.GetSection(CsvImporterOptions.CsvImporterSectionName));
         services.AddScoped<IFileSearchService, FileSearchService>();

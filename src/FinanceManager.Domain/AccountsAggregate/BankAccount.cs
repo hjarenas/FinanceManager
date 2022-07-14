@@ -1,4 +1,3 @@
-using System.Transactions;
 using FinanceManager.Domain.Common;
 using SharedKernel.Exceptions;
 

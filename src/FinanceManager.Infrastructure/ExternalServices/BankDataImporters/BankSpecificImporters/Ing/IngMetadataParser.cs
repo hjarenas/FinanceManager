@@ -25,7 +25,7 @@ public class IngMetadataParser : IIngMetadataParser
             ? throw new ArgumentException(message: "Invalid enum value", paramName: nameof(lineFields))
             : key switch
             {
-                IngMetadataKeys.IBAN        => sourceMetadata with { IBAN = value },
+                IngMetadataKeys.IBAN        => sourceMetadata with { IBAN = ParseIban(value) },
                 IngMetadataKeys.Bank        => sourceMetadata with { BankName = value },
                 IngMetadataKeys.Kontoname   => sourceMetadata with { AccountName = value },
                 IngMetadataKeys.Kunde       => sourceMetadata with { Customers = value },
@@ -37,6 +37,8 @@ public class IngMetadataParser : IIngMetadataParser
             };
         #pragma warning restore IDE0055
     }
+
+    private static string ParseIban(string iban) => iban.Replace(" ", "");
 
     private static IEnumerable<string> GetFirstMetadataRow(ICsvReader reader)
     {

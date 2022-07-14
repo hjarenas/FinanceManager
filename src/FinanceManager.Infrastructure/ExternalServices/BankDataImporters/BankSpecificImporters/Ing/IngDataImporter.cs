@@ -1,3 +1,4 @@
+using System.Text;
 using FinanceManager.Infrastructure.Files;
 using FinanceManager.Infrastructure.Files.Csv;
 using MediatR;
@@ -57,7 +58,7 @@ public class IngTransactionsImporter : IBankTransactionsImporter
 
     private (IngBankMetadata Metadata, IEnumerable<IngTransactionDetails> Transactions) GetRawData(string fileName)
     {
-        var reader = _csvReaderFactory.CreateCsvReader(fileName, new[] { CsvDelimiter });
+        var reader = _csvReaderFactory.CreateCsvReader(fileName, new[] { CsvDelimiter }, Encoding.GetEncoding(1252));
         var metadata = _ingMetadataParser.ParseMetadata(reader);
         var transactionDetails = _ingTransactionDetailsParser.ParseTransactionDetails(reader);
         _logger.LogInformation(

@@ -60,7 +60,7 @@ public record IngTransactionDetails
 
         foreach (var customer in customers)
         {
-            var names = customer.Split(' ');
+            var names = customer.Trim().Split(' ');
             accountHolders.Add(new(names.First(), names.Last()));
         }
         return accountHolders;
@@ -69,13 +69,13 @@ public record IngTransactionDetails
     public static string[] CsvFileHeaders { get; } = {
         "Buchung",
         "Valuta",
-        "Auftraggeber/Empf�nger",
+        "Auftraggeber/Empfänger",
         "Buchungstext",
         "Notiz",
         "Verwendungszweck",
         "Saldo",
-        "W�hrung",
+        "Währung",
         "Betrag",
-        "W�hrung"
+        "Währung"
     };
 }

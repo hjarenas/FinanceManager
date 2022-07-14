@@ -1,3 +1,4 @@
+using System.Text;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualBasic.FileIO;
 
@@ -9,6 +10,14 @@ public class CsvReader : TextFieldParser, ICsvReader
 
     public CsvReader(string filePath, string[] delimiters, ILogger<CsvReader> logger)
         : base(filePath)
+    {
+        Delimiters = delimiters;
+        _filePath = filePath;
+        _logger = logger;
+    }
+
+    public CsvReader(string filePath, string[] delimiters, ILogger<CsvReader> logger, Encoding defaultEncoding)
+    : base(filePath, defaultEncoding)
     {
         Delimiters = delimiters;
         _filePath = filePath;
